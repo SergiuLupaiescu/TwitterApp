@@ -1,0 +1,23 @@
+
+<div class="columns mt-6 is-centered">
+  <div class="column is-one-third">
+    <nav class="panel is-link">
+      <p class="panel-heading">
+        <%= @tweet.title %>
+      </p>
+
+      <div class="panel-block">
+        <%= @tweet.text %>
+      </div>
+
+    </nav>
+
+    <div class="columns is-mobile">
+      <div class="column">
+        <%= link_to 'Edit', edit_tweet_path(@tweet), class: "button is-gray" %>
+        <%= link_to 'Delete', tweet_path(@tweet), data: { turbo_method: :delete, turbo_confirm: "Are you sure?", turbo: true }, class: "button is-gray"%>
+      </div>
+    </div>
+
+  </div>
+</div>

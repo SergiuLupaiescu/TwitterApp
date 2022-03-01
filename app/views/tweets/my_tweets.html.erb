@@ -1,0 +1,35 @@
+
+<div class="rows my-6 is-centered">
+
+  <% if @tweets.present? %>
+    <% @tweets.each do |tweet| %>
+      <div class="rows is-one-quarter my-6">
+        <div class="card">
+
+          <header class="card-header">
+            <p class="card-header-title is-centered"><%= tweet.title if tweet.present? %></p>
+          </header>
+
+          <div class="card-content">
+            <div class="content">
+              <p><span class="has-text-weight-bold"><%= tweet.text %></span></p>
+              <p class="italic"><%= time_ago_in_words(tweet.created_at) %> ago</p>
+            </div>
+          </div>
+
+          <div class="card-footer">
+            <%= link_to 'View', tweet, class: "card-footer-item" %>
+            <%= link_to 'Edit', edit_tweet_path(tweet), class: "card-footer-item"%>
+            <%= link_to 'Delete', tweet_path(tweet), data: { turbo_method: :delete, turbo_confirm: "Are you sure?", turbo: true }, class: "card-footer-item"%>
+          </div>
+
+        </div>
+      </div>
+
+    <% end %>
+  <% else %>
+    <header class="card-header has-background-primary">
+      <h1 class="card-header-title is-centered">No tweets available!</h1>
+    </header>
+  <% end %>
+</div>

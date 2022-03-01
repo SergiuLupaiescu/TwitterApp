@@ -1,0 +1,86 @@
+<section class="hero is-link is-small">
+  <!-- Hero head: will stick at the top -->
+  <div class="hero-head">
+    <nav class="navbar">
+      <div class="container">
+        <div class="navbar-brand">
+          <span class="navbar-item">
+            <span class="icon">
+              <i class="fab fa-twitter fa-stack-2x"></i>
+            </span>
+          </span>
+
+          <%= link_to root_path, class: "navbar-item" do %>
+            <span class="has-text-weight-bold is-size-4 ml-4">Twitter</span>
+          <% end %>
+
+          <span class="navbar-burger" data-target="navbarMenuHeroA">
+            <span></span>
+            <span></span>
+            <span></span>
+          </span>
+        </div>
+
+        <div id="navbarMenuHeroA" class="navbar-menu">
+          <div class="navbar-end">
+            <span class="navbar-item">
+              <% if user_signed_in? %>
+
+                <div class="control">
+                  <input class="input" type="text" placeholder="Find a repository">
+                </div>
+                <div class="control">
+                  <a class="button is-success mx-2">
+                    Search
+                  </a>
+                </div>
+
+                <%= link_to "New Tweet", new_tweet_path, class: "button is-success mx-2"%>
+                <%= button_to "Profile", profile_path, method: :get, class: "button is-success mx-2" %>
+                <%= button_to "Edit Profile", edit_user_registration_path, method: :get, class: "button is-success mx-2" %>
+                <%= link_to "Logout", destroy_user_session_path, data: { turbo_method: :delete, turbo_confirm: "You will be signed out. Wish to proceed?", turbo: true }, class: "button is-success mx-2" %>
+              <% else %>
+                <%= link_to "Sign Up", new_user_registration_path, class: "button is-success mx-2"%>
+                <%= link_to "Login", user_session_path, class: "button is-success mx-2"%> or
+
+                  <div class="dropdown is-hoverable">
+
+                    <div class="dropdown-trigger">
+                      <button class="button is-success mx-2" aria-haspopup="true" aria-controls="dropdown-menu4">
+                        <span>Sign in with</span>
+                        <span class="icon is-small">
+                          <i class="fas fa-angle-down" aria-hidden="true"></i>
+                        </span>
+                      </button>
+                    </div>
+
+                    <div class="dropdown-menu" id="dropdown-menu4" role="menu">
+                      <div class="dropdown-content">
+                        <div class="dropdown-item">
+                          <p><%= link_to "Sign in with Google", user_google_oauth2_omniauth_authorize_path, method: :post, class: "dropdown-item"%></p>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+              <% end %>
+            </span>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </div>
+
+  <!-- Hero content: will be in the middle -->
+  <div class="hero-body">
+    <div class="container has-text-centered">
+
+      <p class="title">
+        <% if content_for(:title) %>
+          <%= yield :title %>
+        <% end %>
+      </p>
+    </div>
+  </div>
+
+</section>

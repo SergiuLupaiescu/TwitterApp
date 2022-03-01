@@ -1,0 +1,27 @@
+
+
+<div class="rows my-6 is-centered">
+  <% if @tweets.present? %>
+    <% @tweets.each do |tweet| %>
+      <div class="rows is-one-quarter my-6">
+        <div class="card">
+
+          <header class="card-header">
+            <p class="card-header-title is-centered"><%= tweet.title if tweet.present? %></p>
+          </header>
+
+          <div class="card-content">
+            <div class="content">
+              <p><span class="has-text-weight-bold"><%= tweet.text %></span></p>
+              <p class="italic"><%= tweet.user.email if tweet.user.present? %> - <%= time_ago_in_words(tweet.created_at) %> ago</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  <% else %>
+    <header class="card-header has-background-primary">
+      <h1 class="card-header-title is-centered">No tweets available!</h1>
+    </header>
+  <% end %>
+</div>
