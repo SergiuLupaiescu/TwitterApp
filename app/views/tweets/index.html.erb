@@ -1,6 +1,8 @@
 
 
+
 <div class="rows my-6 is-centered">
+
   <% if @tweets.present? %>
     <% @tweets.each do |tweet| %>
       <div class="rows is-one-quarter my-6">
@@ -17,6 +19,7 @@
             </div>
           </div>
         </div>
+        <%= button_to 'Retweet', retweet_tweet_path(tweet.id), method: :post %>
       </div>
     <% end %>
   <% else %>

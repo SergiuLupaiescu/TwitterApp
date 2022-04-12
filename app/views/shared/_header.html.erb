@@ -26,14 +26,10 @@
             <span class="navbar-item">
               <% if user_signed_in? %>
 
-                <div class="control">
-                  <input class="input" type="text" placeholder="Find a repository">
-                </div>
-                <div class="control">
-                  <a class="button is-success mx-2">
-                    Search
-                  </a>
-                </div>
+                <%= form_with url: users_url, method: :get, class: "control" do |form| %>
+                  <%= form.text_field :query, class: "input" %>
+                  <div class="control"><%= form.submit "Search", class: "button is-success mx-2"%></div>
+                <% end %>
 
                 <%= link_to "New Tweet", new_tweet_path, class: "button is-success mx-2"%>
                 <%= button_to "Profile", profile_path, method: :get, class: "button is-success mx-2" %>

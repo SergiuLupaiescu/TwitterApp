@@ -8,10 +8,11 @@ class User < ApplicationRecord
          :omniauthable, omniauth_providers: [:google_oauth2]
   has_many :tweets, dependent: :destroy
 
-  has_many :followed_users, foreign_key: :follower_id, class_name: 'Follow'
-  has_many :followees, through: :followed_users
-  has_many :following_users, foreign_key: :followee_id, class_name: 'Follow'
-  has_many :followers, through: :following_users
+  has_many :active_friendships, class_name: "Friendship", foreign_key: "follower_id", dependent: :destroy
+  has_many :passive_friendships, class_name: "Friendship", foreign_key: "followed_id", dependent: :destroy
+
+  has_many :following, through: :active_friendships, source: :followed
+  has_many :followers, through: :passive_friendships, source: :follower
 
   attr_accessor :image
   mount_uploader :image, ImageUploader
@@ -23,10 +24,26 @@ class User < ApplicationRecord
     unless user
          user = User.create(
             email: data['email'],
-            password: Devise.friendly_token[0,20]
+            password: Devise.friendly_token[0,20],
+            confirmed_at: Time.zone.now
          )
     end
     user
   end
 
+  def follow(user)
+    active_friendships.create(followed_id: user.id)
+  end
+
+  def unfollow(user)
+    active_friendships.find_by(followed_id: user.id).destroy
+  end
+
+  def following?(user)
+    following.include?(user)
+  end
+
+  def has_already_liked?(current_user, tweet)
+    Like.where(user_id: current_user.id, tweet_id: tweet.id).exists?
+  end
 end

@@ -58,13 +58,22 @@ class TweetsController < ApplicationController
     @tweets = current_user.tweets
   end
 
-  def other_users_tweets
-    @tweets = Tweet.where(user_id: params[:id])
+  def retweet
+    @retweet = Tweet.new(retweet_params)
+    if @retweet.save
+      redirect_to tweet_path, alert: 'Retweeted!'
+    else
+      redirect_to root_path, alert: 'Can not retweet'
+    end
   end
 
   private
   def tweet_params
     params.fetch(:tweet, {}).permit(:title, :text)
+  end
+
+  def retweet_params
+    params.require(:retweet).permit(:retweet_id, :content).merge(user_id: current_user.id)
   end
 
 end

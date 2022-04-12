@@ -1,0 +1,77 @@
+
+<div class="rows my-6 is-centered">
+  <% if @tweets.present? %>
+    <% @tweets.each do |tweet| %>
+      <div class="box">
+        <article class="media">
+          <div class="media-left">
+            <figure class="image is-64x64">
+              <% if @user.image.present? %>
+                <%= image_tag @user.image.to_s %>
+              <% else %>
+                <img src="https://bulma.io/images/placeholders/128x128.png" alt="Image">
+              <% end %>
+            </figure>
+          </div>
+          <div class="media-content">
+            <div class="content">
+              <p>
+                <strong><%=tweet.title%></strong> <small><%=@user.email%></small> - <small><%= time_ago_in_words(tweet.created_at) %> ago</small>
+                <br>
+                <%= tweet.text %>
+              </p>
+            </div>
+            <nav class="level is-mobile">
+              <div class="level-left">
+                <a class="level-item" aria-label="retweet">
+                <span class="icon is-small">
+                  <i class="fas fa-retweet" aria-hidden="true"></i>
+                </span>
+                </a>
+
+                <% if current_user.has_already_liked?(current_user, tweet) %>
+                  <%= button_to "Unlike", tweet_like_path(tweet), method: :delete, class: "fas fa-heart" %>
+                <% else %>
+                  <%= button_to "Like", tweet_likes_path(tweet), method: :post, class: "fas fa-heart" %>
+                <% end %>
+                &ensp;<p class="subtitle is-5"><strong><%= tweet.likes.count %></strong> likes</p>
+              </div>
+            </nav>
+          </div>
+        </article>
+        <%= render tweet.comments, tweet_id: tweet.id %>
+        <article class="media">
+          <figure class="media-left">
+            <p class="image is-64x64">
+              <% if current_user.image.present? %>
+                <%= image_tag current_user.image.to_s %>
+              <% else %>
+                <img src="https://bulma.io/images/placeholders/128x128.png" alt="Image">
+              <% end %>
+            </p>
+          </figure>
+          <div class="media-content">
+            <%= form_with(model: @comment, url: tweet_comments_path(tweet), method: :post) do |f| %>
+              <div class="field">
+                <%= f.text_area :text, class: 'control' %>
+              </div>
+              <nav class="level">
+                <div class="level-left">
+                  <div class="level-item">
+                    <%= f.submit 'Submit', class: 'button is-info' %>
+                  </div>
+                </div>
+              </nav>
+            <% end %>
+          </div>
+        </article>
+      </div>
+      <% end %>
+  <% else %>
+    <header class="card-header has-background-primary">
+      <h1 class="card-header-title is-centered">No tweets available!</h1>
+    </header>
+  <% end %>
+
+</div>
+

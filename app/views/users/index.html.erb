@@ -1,0 +1,26 @@
+
+<div class="rows my-6 is-centered">
+  <% if @users.present? %>
+    <% @users.each do |user| %>
+      <% if user != current_user %>
+        <div class="rows is-one-quarter my-6">
+          <div class="card">
+            <header class="card-header">
+              <p class="card-header-title is-centered"><%= user.email %></p>
+              <% if current_user.following?(user) %>
+                <%= button_to "Unfollow", friendships_path(user_id: user.id), method: :delete, class: "button is-success mx-2" %>
+              <% else %>
+                <%= button_to "Follow", friendships_path(user_id: user.id), method: :post, class: "button is-success mx-2" %>
+              <% end %>
+              <%= link_to "View Profile", user, class: "button is-success mx-2" %>
+            </header>
+          </div>
+        </div>
+        <% end %>
+    <% end %>
+  <% else %>
+    <header class="card-header has-background-primary">
+      <h1 class="card-header-title is-centered">No users match the search!</h1>
+    </header>
+  <% end %>
+</div>

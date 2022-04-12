@@ -1,7 +1,6 @@
 Rails.application.routes.draw do
-  resources :follows
   devise_for :users, controllers: { registrations: "users/registrations", omniauth_callbacks: 'users/omniauth_callbacks',
-                                    confirmations: 'users/confirmations'
+                                    confirmations: 'users/confirmations', sessions: "users/sessions"
   }
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
@@ -15,10 +14,16 @@ Rails.application.routes.draw do
     member do
       get :confirm_email
     end
+    get "search", on: :collection
   end
 
-  post '/users/:id/follow', to: "users#follow", as: "follow_user"
-  post '/users/:id/unfollow', to: "users#unfollow", as: "unfollow_user"
+  resources :tweets do
+    resources :likes
+    resources :comments
+    member do
+      post :retweet
+    end
+  end
+  resource :friendships, only: [:create, :destroy]
 
-  resources :tweets
 end

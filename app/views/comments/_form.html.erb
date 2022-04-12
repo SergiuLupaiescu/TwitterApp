@@ -1,0 +1,11 @@
+<%= form_with model: @comment, url: tweet_comment_path(@tweet) do |form| %>
+
+  <div class="field">
+    <%= form.label :text, class: "label"  %>
+    <%= form.text_field :text, class: "input" %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit class: "button is-success" %>
+  </div>
+<% end %>
